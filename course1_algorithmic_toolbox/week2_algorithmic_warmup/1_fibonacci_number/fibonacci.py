@@ -1,5 +1,7 @@
 # Uses python3
 def calc_fib(n):
+    if n <= 1:
+        return n
     arr = [None for i in range(n + 1)]
     arr[0] = 0
     arr[1] = 1
