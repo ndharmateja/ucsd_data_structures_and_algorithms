@@ -1,5 +1,5 @@
 def max_pairwise_product(numbers):
-    first, second = numbers[0], numbers[1]
+    first, second = -float('inf'), -float('inf')
     for number in numbers:
         if number > first:
             second = first
