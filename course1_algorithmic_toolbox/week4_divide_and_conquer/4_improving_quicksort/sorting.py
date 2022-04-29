@@ -52,11 +52,3 @@ if __name__ == '__main__':
     randomized_quick_sort(a, 0, n - 1)
     for x in a:
         print(x, end=' ')
-    # for i in range(10):
-    #     a = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-    #     randomized_quick_sort(a, 0, len(a) - 1)
-    #     print(a)
-
-    # a = [9, 7, 8, 10]
-    # print(partition3(a, 0, len(a) - 1))
-    # print(a)
