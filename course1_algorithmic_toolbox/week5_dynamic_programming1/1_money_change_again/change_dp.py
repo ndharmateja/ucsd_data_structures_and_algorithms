@@ -1,10 +1,15 @@
 # Uses python3
-import sys
+
 
 def get_change(m):
-    #write your code here
-    return m // 4
+    memo = {0: 0}
+    for i in range(m):
+        for coin in [1, 3, 4]:
+            if (i + coin not in memo) or (i + coin in memo and memo[i + coin] > memo[i] + 1):
+                memo[i + coin] = memo[i] + 1
+    return memo[m]
+
 
 if __name__ == '__main__':
-    m = int(sys.stdin.read())
+    m = int(input())
     print(get_change(m))
