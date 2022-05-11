@@ -1,2 +1,3 @@
 # ucsd_data_structures_and_algorithms
-Assignments of Coursera Specialization - Data Structures and Algorithms - UCSD
+
+Assignments related to Coursera Specialization - [Data Structures and Algorithms - UCSD](https://www.coursera.org/specializations/data-structures-algorithms)
