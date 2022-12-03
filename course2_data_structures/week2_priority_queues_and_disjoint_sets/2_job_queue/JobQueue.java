@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class JobQueue {
@@ -10,6 +11,24 @@ public class JobQueue {
 
     private FastScanner in;
     private PrintWriter out;
+
+    static class Thread implements Comparable<Thread> {
+        int id;
+        long nextFreeTime;
+
+        Thread(int id, long nextFreeTime) {
+            this.id = id;
+            this.nextFreeTime = nextFreeTime;
+        }
+
+        @Override
+        public int compareTo(JobQueue.Thread o) {
+            if (this.nextFreeTime == o.nextFreeTime) {
+                return this.id - o.id;
+            }
+            return (int) (this.nextFreeTime - o.nextFreeTime);
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         new JobQueue().solve();
@@ -31,20 +50,24 @@ public class JobQueue {
     }
 
     private void assignJobs() {
-        // TODO: replace this code with a faster algorithm.
         assignedWorker = new int[jobs.length];
         startTime = new long[jobs.length];
-        long[] nextFreeTime = new long[numWorkers];
+
+        PriorityQueue<Thread> queue = new PriorityQueue<>();
+
+        for (int i = 0; i < numWorkers; i++) {
+            queue.add(new Thread(i, 0));
+        }
+
         for (int i = 0; i < jobs.length; i++) {
             int duration = jobs[i];
-            int bestWorker = 0;
-            for (int j = 0; j < numWorkers; ++j) {
-                if (nextFreeTime[j] < nextFreeTime[bestWorker])
-                    bestWorker = j;
-            }
-            assignedWorker[i] = bestWorker;
-            startTime[i] = nextFreeTime[bestWorker];
-            nextFreeTime[bestWorker] += duration;
+
+            Thread bestWorker = queue.poll();
+            assignedWorker[i] = bestWorker.id;
+            startTime[i] = bestWorker.nextFreeTime;
+
+            bestWorker.nextFreeTime += duration;
+            queue.add(bestWorker);
         }
     }
 
