@@ -1,5 +1,33 @@
 # python3
 
+def parent(i):
+    return (i - 1) // 2
+
+
+def left(i):
+    return 2 * i + 1
+
+
+def right(i):
+    return 2 * i + 2
+
+
+def sift_down(i, data, swaps):
+    l = left(i)
+    r = right(i)
+
+    max_index = i
+
+    if l < len(data) and data[l] < data[max_index]:
+        max_index = l
+    if r < len(data) and data[r] < data[max_index]:
+        max_index = r
+
+    if i != max_index:
+        data[i], data[max_index] = data[max_index], data[i]
+        swaps.append((i, max_index))
+        sift_down(max_index, data, swaps)
+
 
 def build_heap(data):
     """Build a heap from ``data`` inplace.
@@ -11,13 +39,12 @@ def build_heap(data):
     # of swaps. This turns the given array into a heap, but in the worst
     # case gives a quadratic number of swaps.
     #
-    # TODO: replace by a more efficient implementation
     swaps = []
-    for i in range(len(data)):
-        for j in range(i + 1, len(data)):
-            if data[i] > data[j]:
-                swaps.append((i, j))
-                data[i], data[j] = data[j], data[i]
+    start = parent(len(data) - 1)
+
+    for i in range(start, -1, -1):
+        sift_down(i, data, swaps)
+
     return swaps
 
 
