@@ -4,17 +4,34 @@ import sys
 import threading
 
 
-def compute_height(n, parents):
-    # Replace this code with a faster implementation
-    max_height = 0
-    for vertex in range(n):
-        height = 0
-        current = vertex
-        while current != -1:
-            height += 1
-            current = parents[current]
-        max_height = max(max_height, height)
-    return max_height
+class Node:
+    def __init__(self) -> None:
+        self.children = []
+
+
+def height(node: Node):
+    if len(node.children) == 0:
+        return 1
+
+    max_child_height = 0
+    for child in node.children:
+        max_child_height = max(max_child_height, height(child))
+
+    return 1 + max_child_height
+
+
+def compute_height(n, parents: list):
+    nodes = [Node() for _ in parents]
+
+    for i, parent in enumerate(parents):
+        if parent != -1:
+            node = nodes[i]
+            parent_node = nodes[parent]
+            parent_node.children.append(node)
+
+    root = nodes[parents.index(-1)]
+
+    return height(root)
 
 
 def main():
