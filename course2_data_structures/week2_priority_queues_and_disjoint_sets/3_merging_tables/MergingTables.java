@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -29,8 +28,13 @@ public class MergingTables {
             rank = 0;
             parent = this;
         }
-        Table getParent() {
-            // find super parent and compress path
+
+        // Path compression
+        Table getId() {
+            if (this != parent) {
+                parent = parent.getId();
+                rank = 1;
+            }
             return parent;
         }
     }
@@ -38,14 +42,33 @@ public class MergingTables {
     int maximumNumberOfRows = -1;
 
     void merge(Table destination, Table source) {
-        Table realDestination = destination.getParent();
-        Table realSource = source.getParent();
+        Table realDestination = destination.getId();
+        Table realSource = source.getId();
         if (realDestination == realSource) {
             return;
         }
+
         // merge two components here
         // use rank heuristic
         // update maximumNumberOfRows
+        if (realDestination.rank >= realSource.rank) {
+            realSource.parent = realDestination;
+            realDestination.numberOfRows += realSource.numberOfRows;
+            realSource.numberOfRows = 0;
+            if (realDestination.numberOfRows > maximumNumberOfRows) {
+                maximumNumberOfRows = realDestination.numberOfRows;
+            }
+            if (realDestination.rank == realSource.rank) {
+                realDestination.rank += 1;
+            }
+        } else {
+            realDestination.parent = realSource;
+            realSource.numberOfRows += realDestination.numberOfRows;
+            realDestination.numberOfRows = 0;
+            if (realSource.numberOfRows > maximumNumberOfRows) {
+                maximumNumberOfRows = realSource.numberOfRows;
+            }
+        }
     }
 
     public void run() {
@@ -64,7 +87,6 @@ public class MergingTables {
             writer.printf("%d\n", maximumNumberOfRows);
         }
     }
-
 
     static class InputReader {
         public BufferedReader reader;
