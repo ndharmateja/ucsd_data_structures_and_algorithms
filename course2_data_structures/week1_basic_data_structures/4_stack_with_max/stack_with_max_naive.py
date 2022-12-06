@@ -2,25 +2,30 @@
 import sys
 
 
+# Takes O(n) auxilary space
+# as we are storing another stack with max values
+# at every stage
 class StackWithMax():
     def __init__(self):
         self.__stack = []
-        self.max = -float('inf')
+        self.__max = []
 
     def Push(self, a):
+        max_value = a
+        if len(self.__stack) != 0 and self.__max[-1] > a:
+            max_value = self.__max[-1]
+
         self.__stack.append(a)
-        if a > self.max:
-            self.max = a
+        self.__max.append(max_value)
 
     def Pop(self):
         if len(self.__stack) == 0:
             return
-        popped = self.__stack.pop()
-        if popped == self.max:
-            self.max = max(self.__stack)
+        self.__stack.pop()
+        self.__max.pop()
 
     def Max(self):
-        return self.max
+        return self.__max[-1]
 
 
 if __name__ == '__main__':
@@ -37,4 +42,4 @@ if __name__ == '__main__':
         elif query[0] == "max":
             print(stack.Max())
         else:
-            assert(0)
+            assert (0)
