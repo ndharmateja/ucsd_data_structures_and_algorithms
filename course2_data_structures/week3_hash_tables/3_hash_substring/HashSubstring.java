@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -34,22 +33,23 @@ public class HashSubstring {
         int m = s.length(), n = t.length();
         List<Integer> occurrences = new ArrayList<Integer>();
         for (int i = 0; i + m <= n; ++i) {
-	    boolean equal = true;
-	    for (int j = 0; j < m; ++j) {
-		if (s.charAt(j) != t.charAt(i + j)) {
-		     equal = false;
- 		    break;
-		}
-	    }
+            boolean equal = true;
+            for (int j = 0; j < m; ++j) {
+                if (s.charAt(j) != t.charAt(i + j)) {
+                    equal = false;
+                    break;
+                }
+            }
             if (equal)
                 occurrences.add(i);
-	}
+        }
         return occurrences;
     }
 
     static class Data {
         String pattern;
         String text;
+
         public Data(String pattern, String text) {
             this.pattern = pattern;
             this.text = text;
@@ -77,4 +77,3 @@ public class HashSubstring {
         }
     }
 }
-
