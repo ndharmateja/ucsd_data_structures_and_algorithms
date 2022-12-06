@@ -1,19 +1,24 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class HashChains {
 
     private FastScanner in;
     private PrintWriter out;
-    // store all strings in one list
-    private List<String> elems;
-    // for hash function
     private int bucketCount;
     private int prime = 1000000007;
     private int multiplier = 263;
+
+    private Node[] chains;
+
+    static class Node {
+        String data;
+        Node next;
+
+        Node(String data) {
+            this.data = data;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         new HashChains().processQueries();
@@ -23,7 +28,7 @@ public class HashChains {
         long hash = 0;
         for (int i = s.length() - 1; i >= 0; --i)
             hash = (hash * multiplier + s.charAt(i)) % prime;
-        return (int)hash % bucketCount;
+        return (int) hash % bucketCount;
     }
 
     private Query readQuery() throws IOException {
@@ -44,36 +49,87 @@ public class HashChains {
     }
 
     private void processQuery(Query query) {
-        switch (query.type) {
-            case "add":
-                if (!elems.contains(query.s))
-                    elems.add(0, query.s);
-                break;
-            case "del":
-                if (elems.contains(query.s))
-                    elems.remove(query.s);
-                break;
-            case "find":
-                writeSearchResult(elems.contains(query.s));
-                break;
-            case "check":
-                for (String cur : elems)
-                    if (hashFunc(cur) == query.ind)
-                        out.print(cur + " ");
-                out.println();
-                // Uncomment the following if you want to play with the program interactively.
-                // out.flush();
-                break;
-            default:
-                throw new RuntimeException("Unknown query: " + query.type);
+        if (query.type.equals("add")) {
+            int index = hashFunc(query.s);
+            Node head = chains[index];
+
+            boolean found = isFound(query.s);
+
+            if (found)
+                return;
+
+            Node newNode = new Node(query.s);
+            if (head == null) {
+                chains[index] = newNode;
+            } else {
+                newNode.next = head;
+                chains[index] = newNode;
+            }
+        } else if (query.type.equals("del")) {
+            int index = hashFunc(query.s);
+
+            Node prev = null;
+            Node curr = chains[index];
+
+            if (curr == null) {
+                return;
+            }
+
+            if (curr.data.equals(query.s)) {
+                chains[index] = curr.next;
+                return;
+            }
+
+            while (curr != null) {
+                if (curr.data.equals(query.s)) {
+                    prev.next = curr.next;
+                    break;
+                }
+                prev = curr;
+                curr = curr.next;
+            }
+        } else if (query.type.equals("find")) {
+            writeSearchResult(isFound(query.s));
+        } else if (query.type.equals("check")) {
+            printChain(query.ind);
+        } else {
+            throw new RuntimeException("Unknown query: " + query.type);
         }
     }
 
+    private boolean isFound(String s) {
+        int index = hashFunc(s);
+        Node curr = chains[index];
+
+        while (curr != null) {
+            if (curr.data.equals(s)) {
+                return true;
+            }
+            curr = curr.next;
+        }
+
+        return false;
+    }
+
+    private void printChain(int index) {
+        Node curr = chains[index];
+        StringBuilder builder = new StringBuilder();
+        while (curr != null) {
+            builder.append(curr.data);
+            builder.append(" ");
+            curr = curr.next;
+        }
+        builder.setLength(Math.max(builder.length() - 1, 0));
+        out.println(builder.toString());
+    }
+
     public void processQueries() throws IOException {
-        elems = new ArrayList<>();
         in = new FastScanner();
         out = new PrintWriter(new BufferedOutputStream(System.out));
         bucketCount = in.nextInt();
+
+        chains = new Node[bucketCount];
+
         int queryCount = in.nextInt();
         for (int i = 0; i < queryCount; ++i) {
             processQuery(readQuery());
