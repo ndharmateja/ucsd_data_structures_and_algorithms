@@ -1,12 +1,37 @@
 # python3
+from collections import deque
+from typing import List
 
 
-def max_sliding_window_naive(sequence, m):
-    maximums = []
-    for i in range(len(sequence) - m + 1):
-        maximums.append(max(sequence[i:i + m]))
+def max_sliding_window(sequence: List[int], m: int) -> List[int]:
+    outputs = []
 
-    return maximums
+    # we store the indices
+    queue = deque()
+
+    # start and end indices of the sliding window (inclusive)
+    start = end = 0
+
+    while end < len(sequence):
+        # Remove all elements on right that are smaller than the current value
+        while len(queue) > 0 and sequence[queue[-1]] < sequence[end]:
+            queue.pop()
+
+        # Add new value to queue
+        queue.append(end)
+
+        # Remove left most value if out of bounds
+        if (queue[0] < start):
+            queue.popleft()
+
+        if end + 1 >= m:
+            start += 1
+            outputs.append(sequence[queue[0]])
+
+        end += 1
+
+    return outputs
+
 
 if __name__ == '__main__':
     n = int(input())
@@ -14,5 +39,4 @@ if __name__ == '__main__':
     assert len(input_sequence) == n
     window_size = int(input())
 
-    print(*max_sliding_window_naive(input_sequence, window_size))
-
+    print(*max_sliding_window(input_sequence, window_size))
