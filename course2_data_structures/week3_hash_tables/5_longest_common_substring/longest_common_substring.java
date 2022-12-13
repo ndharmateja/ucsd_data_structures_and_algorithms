@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class common_substring {
+public class longest_common_substring {
     public class Answer {
         int i, j, len;
         Answer(int i, int j, int len) {
@@ -35,6 +35,6 @@ public class common_substring {
     }
 
     static public void main(String[] args) {
-        new common_substring().run();
+        new longest_common_substring().run();
     }
 }
