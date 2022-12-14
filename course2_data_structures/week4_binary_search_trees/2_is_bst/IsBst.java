@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class is_bst {
+public class IsBst {
     class FastScanner {
         StringTokenizer tok = new StringTokenizer("");
         BufferedReader in;
@@ -15,6 +15,7 @@ public class is_bst {
                 tok = new StringTokenizer(in.readLine());
             return tok.nextToken();
         }
+
         int nextInt() throws IOException {
             return Integer.parseInt(next());
         }
@@ -46,8 +47,8 @@ public class is_bst {
         }
 
         boolean isBinarySearchTree() {
-          // Implement correct algorithm here
-          return true;
+            // Implement correct algorithm here
+            return true;
         }
     }
 
@@ -55,16 +56,17 @@ public class is_bst {
         new Thread(null, new Runnable() {
             public void run() {
                 try {
-                    new is_bst().run();
+                    new IsBst().run();
                 } catch (IOException e) {
                 }
             }
         }, "1", 1 << 26).start();
     }
+
     public void run() throws IOException {
         IsBST tree = new IsBST();
         tree.read();
-        if (tree.solve()) {
+        if (tree.isBinarySearchTree()) {
             System.out.println("CORRECT");
         } else {
             System.out.println("INCORRECT");
