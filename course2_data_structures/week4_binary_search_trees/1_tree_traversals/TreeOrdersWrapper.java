@@ -1,8 +1,8 @@
 import java.util.*;
 import java.io.*;
 
-public class tree_orders {
-    class FastScanner {
+public class TreeOrdersWrapper {
+	class FastScanner {
 		StringTokenizer tok = new StringTokenizer("");
 		BufferedReader in;
 
@@ -15,7 +15,7 @@ public class tree_orders {
 				tok = new StringTokenizer(in.readLine());
 			return tok.nextToken();
 		}
-	
+
 		int nextInt() throws IOException {
 			return Integer.parseInt(next());
 		}
@@ -24,14 +24,14 @@ public class tree_orders {
 	public class TreeOrders {
 		int n;
 		int[] key, left, right;
-		
+
 		void read() throws IOException {
 			FastScanner in = new FastScanner();
 			n = in.nextInt();
 			key = new int[n];
 			left = new int[n];
 			right = new int[n];
-			for (int i = 0; i < n; i++) { 
+			for (int i = 0; i < n; i++) {
 				key[i] = in.nextInt();
 				left[i] = in.nextInt();
 				right[i] = in.nextInt();
@@ -40,38 +40,38 @@ public class tree_orders {
 
 		List<Integer> inOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
-                        
+			// Finish the implementation
+			// You may need to add a new recursive method to do that
+
 			return result;
 		}
 
 		List<Integer> preOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
-                        
+			// Finish the implementation
+			// You may need to add a new recursive method to do that
+
 			return result;
 		}
 
 		List<Integer> postOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
-                        
+			// Finish the implementation
+			// You may need to add a new recursive method to do that
+
 			return result;
 		}
 	}
 
 	static public void main(String[] args) throws IOException {
-            new Thread(null, new Runnable() {
-                    public void run() {
-                        try {
-                            new tree_orders().run();
-                        } catch (IOException e) {
-                        }
-                    }
-                }, "1", 1 << 26).start();
+		new Thread(null, new Runnable() {
+			public void run() {
+				try {
+					new TreeOrdersWrapper().run();
+				} catch (IOException e) {
+				}
+			}
+		}, "1", 1 << 26).start();
 	}
 
 	public void print(List<Integer> x) {
