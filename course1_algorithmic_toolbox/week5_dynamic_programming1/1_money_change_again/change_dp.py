@@ -1,13 +1,17 @@
 # Uses python3
 
+def get_change_helper(m, memo={0: 0}):
+    if m < 0:
+        return float('inf')
+    if m not in memo:
+        memo[m] = min(get_change_helper(m - 1, memo),
+                      get_change_helper(m - 3, memo),
+                      get_change_helper(m - 4, memo)) + 1
+    return memo[m]
+
 
 def get_change(m):
-    memo = {0: 0}
-    for i in range(m):
-        for coin in [1, 3, 4]:
-            if (i + coin not in memo) or (i + coin in memo and memo[i + coin] > memo[i] + 1):
-                memo[i + coin] = memo[i] + 1
-    return memo[m]
+    return get_change_helper(m)
 
 
 if __name__ == '__main__':
