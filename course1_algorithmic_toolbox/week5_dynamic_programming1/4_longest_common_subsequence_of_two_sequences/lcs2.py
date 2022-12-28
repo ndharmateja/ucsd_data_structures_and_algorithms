@@ -3,18 +3,14 @@
 import sys
 
 
-def get_key(a, b):
-    return (tuple(a), tuple(b))
-
-
 def lcs2(a, b, memo={}):
     if len(a) == 0 or len(b) == 0:
         return 0
-    key = get_key(a, b)
+    key = (len(a), len(b))
     if key not in memo:
-        val1 = lcs2(a[:-1], b)
-        val2 = lcs2(a, b[:-1])
-        val3 = lcs2(a[:-1], b[:-1])
+        val1 = lcs2(a[:-1], b, memo)
+        val2 = lcs2(a, b[:-1], memo)
+        val3 = lcs2(a[:-1], b[:-1], memo)
         if a[-1] == b[-1]:
             memo[key] = max(val1, val2, val3 + 1)
         else:
