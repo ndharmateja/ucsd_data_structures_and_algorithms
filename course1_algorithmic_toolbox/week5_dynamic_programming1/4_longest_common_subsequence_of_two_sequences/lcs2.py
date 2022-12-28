@@ -1,10 +1,26 @@
-#Uses python3
+# Uses python3
 
 import sys
 
-def lcs2(a, b):
-    #write your code here
-    return min(len(a), len(b))
+
+def get_key(a, b):
+    return (tuple(a), tuple(b))
+
+
+def lcs2(a, b, memo={}):
+    if len(a) == 0 or len(b) == 0:
+        return 0
+    key = get_key(a, b)
+    if key not in memo:
+        val1 = lcs2(a[:-1], b)
+        val2 = lcs2(a, b[:-1])
+        val3 = lcs2(a[:-1], b[:-1])
+        if a[-1] == b[-1]:
+            memo[key] = max(val1, val2, val3 + 1)
+        else:
+            memo[key] = max(val1, val2, val3)
+    return memo[key]
+
 
 if __name__ == '__main__':
     input = sys.stdin.read()
