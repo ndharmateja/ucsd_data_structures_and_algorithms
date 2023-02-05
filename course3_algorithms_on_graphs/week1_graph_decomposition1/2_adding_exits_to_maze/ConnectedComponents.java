@@ -1,11 +1,37 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ConnectedComponents {
+    private static void explore(Integer currVertex, ArrayList<Integer>[] adj, Set<Integer> visited) {
+        // Mark currVertex as visited
+        visited.add(currVertex);
+
+        // Explore each not visited neighbour of the current vertex
+        for (int neighbour : adj[currVertex]) {
+            if (!visited.contains(neighbour)) {
+                explore(neighbour, adj, visited);
+            }
+        }
+    }
+
     private static int numberOfComponents(ArrayList<Integer>[] adj) {
-        int result = 0;
-        // write your code here
-        return result;
+        // Number of components
+        int numComponents = 0;
+        Set<Integer> visited = new HashSet<>();
+
+        // For each not visited vertex in the graph
+        // explore it if it's unexplored
+        for (int vertex = 0; vertex < adj.length; vertex++) {
+            if (!visited.contains(vertex)) {
+                explore(vertex, adj, visited);
+                numComponents++;
+            }
+        }
+
+        // Return number of components
+        return numComponents;
     }
 
     public static void main(String[] args) {
