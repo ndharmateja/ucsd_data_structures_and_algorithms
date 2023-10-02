@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Reachability {
-    private static int reach(ArrayList<Integer>[] adj, int x, int y,
-            Set<Integer> visited) {
+    private static HashSet<Integer> visited = new HashSet<>();
+
+    private static int reach(ArrayList<Integer>[] adj, int x, int y) {
         // Add node 'x' to the visited set
         visited.add(x);
 
@@ -17,7 +17,7 @@ public class Reachability {
         // if 'y' can be reached from the neighbour
         // and return 1 if yes
         for (int neighbour : adj[x]) {
-            if (!visited.contains(neighbour) && reach(adj, neighbour, y, visited) == 1)
+            if (!visited.contains(neighbour) && reach(adj, neighbour, y) == 1)
                 return 1;
         }
 
@@ -47,7 +47,6 @@ public class Reachability {
         int y = scanner.nextInt() - 1;
         scanner.close();
 
-        Set<Integer> visited = new HashSet<>();
-        System.out.println(reach(adj, x, y, visited));
+        System.out.println(reach(adj, x, y));
     }
 }

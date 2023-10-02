@@ -1,17 +1,18 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 public class ConnectedComponents {
-    private static void explore(Integer currVertex, ArrayList<Integer>[] adj, Set<Integer> visited) {
-        // Mark currVertex as visited
+    private static HashSet<Integer> visited = new HashSet<>();
+
+    private static void explore(Integer currVertex, ArrayList<Integer>[] adj) {
+        // Add curr vertex to visited
         visited.add(currVertex);
 
-        // Explore each not visited neighbour of the current vertex
+        // Explore all unexplored neighbours
         for (int neighbour : adj[currVertex]) {
             if (!visited.contains(neighbour)) {
-                explore(neighbour, adj, visited);
+                explore(neighbour, adj);
             }
         }
     }
@@ -19,13 +20,12 @@ public class ConnectedComponents {
     private static int numberOfComponents(ArrayList<Integer>[] adj) {
         // Number of components
         int numComponents = 0;
-        Set<Integer> visited = new HashSet<>();
 
         // For each not visited vertex in the graph
         // explore it if it's unexplored
         for (int vertex = 0; vertex < adj.length; vertex++) {
             if (!visited.contains(vertex)) {
-                explore(vertex, adj, visited);
+                explore(vertex, adj);
                 numComponents++;
             }
         }
