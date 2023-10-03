@@ -5,9 +5,16 @@ import java.util.Scanner;
 
 public class Acyclicity {
 
+    // To keep track of all the visited vertices
+    private static Set<Integer> visited = new HashSet<>();
+
+    // To keep track of the current path of exploration
+    // Becomes empty after complete exploration of a vertex
+    // So doesn't need to be reset after every first level explore(v) call
+    private static Set<Integer> currentPath = new HashSet<>();
+
     // returns true if there is a cycle while exploring
-    private static boolean explore(ArrayList<Integer>[] adj, int v, Set<Integer> visited,
-            Set<Integer> currentPath) {
+    private static boolean explore(ArrayList<Integer>[] adj, int v) {
         // Add current vertex to the visited set
         visited.add(v);
 
@@ -27,7 +34,7 @@ public class Acyclicity {
             // it means that there is a cycle somewhere along the exploration of
             // the neighbour and we return true
             if (!visited.contains(neighbour)) {
-                if (explore(adj, neighbour, visited, currentPath)) {
+                if (explore(adj, neighbour)) {
                     return true;
                 }
             }
@@ -45,15 +52,18 @@ public class Acyclicity {
 
     private static int acyclic(ArrayList<Integer>[] adj) {
         // Explore each unvisited vertex
-        HashSet<Integer> visited = new HashSet<>();
         for (int v = 0; v < adj.length; v++) {
             if (!visited.contains(v)) {
                 // If exploration of current unvisited vertex returns true
                 // it means there is a cycle in this exploration
                 // and we return 1
-                if (explore(adj, v, visited, new HashSet<>())) {
+                if (explore(adj, v)) {
                     return 1;
                 }
+
+                // After an exploration is completely done
+                // the current path set is empty
+                // so it can be used for exploring the next unvisited vertex
             }
         }
 
