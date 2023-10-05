@@ -2,19 +2,17 @@ import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Dijkstra {
-    private static long distance(ArrayList<Integer>[] adj, ArrayList<Integer>[] cost, int s, int t) {
-        // Initialize distance values to infinity
-        // and distance of source vertex to 0
+
+    private static long[] initDistances(ArrayList<Integer>[] adj) {
         int numVertices = adj.length;
         long[] dist = new long[numVertices];
         for (int v = 0; v < numVertices; v++) {
             dist[v] = Long.MAX_VALUE;
         }
-        dist[s] = 0;
+        return dist;
+    }
 
-        // Intialize priority queue and add all vertices
-        // Comparator for this priority queue will be based
-        // on the distances of the vertices
+    private static PriorityQueue<Integer> initPriorityQueue(ArrayList<Integer>[] adj, long[] dist) {
         PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<>() {
             @Override
             public int compare(Integer o1, Integer o2) {
@@ -25,7 +23,20 @@ public class Dijkstra {
                 return 0;
             }
         });
-        for (int v = 0; v < numVertices; v++) {
+        return pq;
+    }
+
+    private static long distance(ArrayList<Integer>[] adj, ArrayList<Integer>[] cost, int s, int t) {
+        // Initialize distance values to infinity
+        // and distance of source vertex to 0
+        long[] dist = initDistances(adj);
+        dist[s] = 0;
+
+        // Intialize priority queue and add all vertices
+        // Comparator for this priority queue will be based
+        // on the distances of the vertices
+        PriorityQueue<Integer> pq = initPriorityQueue(adj, dist);
+        for (int v = 0; v < adj.length; v++) {
             pq.add(v);
         }
 
