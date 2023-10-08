@@ -186,27 +186,24 @@ public class ConnectingPoints {
         cost[0] = 0;
         pq.add(0);
 
-        // Create a set to track the vertices for which
-        // cost is already known
-        Set<Integer> visited = new HashSet<>();
-
         // While the priority queue is non empty
         while (!pq.isEmpty()) {
             // Extract the vertex with the min cost
             // and this will be part of our MST
             // so we add its cost to the result
-            // and mark it as visited
             int u = pq.poll();
             result += cost[u];
-            visited.add(u);
 
-            // For each of its unvisited neighbours who have
+            // For each of its neighbours which has
             // a higher cost, we update its cost and also
             // change its priority in the priority queue
             for (int v = 0; v < xs.length; v++) {
                 double uvDistance = computeDistance(xs[u], ys[u], xs[v], ys[v]);
-                if (!visited.contains(v) && cost[v] > uvDistance) {
+                if (cost[v] > uvDistance) {
                     cost[v] = uvDistance;
+
+                    // The way we change priority in a priority queue
+                    // in java is by removing and adding the element again
                     pq.remove(v);
                     pq.add(v);
                 }
