@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@SuppressWarnings("unchecked")
 public class NegativeCycle {
     private static int negativeCycle(ArrayList<Integer>[] adj, ArrayList<Integer>[] cost) {
         // write your code here
@@ -11,8 +12,8 @@ public class NegativeCycle {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
         int m = scanner.nextInt();
-        ArrayList<Integer>[] adj = (ArrayList<Integer>[])new ArrayList[n];
-        ArrayList<Integer>[] cost = (ArrayList<Integer>[])new ArrayList[n];
+        ArrayList<Integer>[] adj = (ArrayList<Integer>[]) new ArrayList[n];
+        ArrayList<Integer>[] cost = (ArrayList<Integer>[]) new ArrayList[n];
         for (int i = 0; i < n; i++) {
             adj[i] = new ArrayList<Integer>();
             cost[i] = new ArrayList<Integer>();
@@ -25,7 +26,7 @@ public class NegativeCycle {
             adj[x - 1].add(y - 1);
             cost[x - 1].add(w);
         }
+        scanner.close();
         System.out.println(negativeCycle(adj, cost));
     }
 }
-
